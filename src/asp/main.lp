@@ -38,17 +38,23 @@ connected(start(X1,Y1), end(X2,Y2)) :- connected(start(X1,Y1), end(Z1,Z2)), link
 
 
 
+ c(X0, Y0, Z, S1) :-  S1 = #count{link(start(X1, Y1), end(X2, Y2)): connected(start(X0, Y0), end(X1, Y1)), link(start(X2, Y2), end(X3, Y3)), X1 = X2, X2 != X3, Y1!= Y2, Y2 = Y3}, number(X0, Y0, Z).
+ 
+ a(X0, Y0, Z, S2) :- S2 = #count{link(start(X1, Y1), end(X2, Y2)): connected(start(X0, Y0), end(X1, Y1)), link(start(X2, Y2), end(X3, Y3)), Y1 = Y2, Y2 != Y3, X1!= X2, X2 = X3}, number(X0, Y0, Z).
+
+ :- a(X, Y, Z, S1), c(X, Y, Z, S2), S1 + S2 != Z.
+
+ #show link/2.
 
 
 
 
 
 
-%:- link(_, _, X, Y), link(_,_, X, Y), not goal(X,Y).
 
-%:- link(X0, Y0, X1, Y1), link(X1, Y2, X3, Y3), X1 !=X2, Y1 !=Y2.
 
-%:- number(X1, Y1, Z), grid(X2, Y2), not connected(X1, Y1, X2, Y2).
+
+
 
 
 %#show link/2.
