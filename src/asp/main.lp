@@ -1,5 +1,5 @@
 % Generate
-#include "data/input1.lp".
+%#include "data/input1.lp".
 
 % Define
 

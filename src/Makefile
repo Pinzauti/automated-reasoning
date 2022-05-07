@@ -4,8 +4,8 @@ MINIZINC = python main.py minizinc
 default:
 	@echo Hi, 
 	@echo df
-	
-asp:
+
+asp1:
 	${ASP}
 
 minizinc:
