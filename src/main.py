@@ -4,29 +4,34 @@ entrypoint
 import argparse
 import clingo
 import re
+import random
 
 
-def on_model(m):
+def asp_prettier(m):
     """
-    Prints the APS result in a prettier and more comprehensible way.
+    Prints the ASP result in a prettier and more comprehensible way.
     :param m: the model.
+    :return: None.
     """
     goal_point = re.match(r'goal\(\d,\d\)', str(m))
     links = re.findall(r'link\(start\(\d,\d\),end\(\d,\d\)\)', str(m))
 
     if goal_point:
-        print("The intersecion point is: ") 
-        print(goal_point.group() + "\n")
+        print(f"The intersecion point is:{goal_point.group()} \n") 
      
     if links:
         print("The links to get to the intersection points are the following: \n")
         for link in links:
             print(link + '\n')
 
+    if not goal_point and not links:
+        print("No solution found. \n")
+
 
 def asp_manual():
     """
     Manual input for ASP. You can modify the input file located in asp/data/input.lp.
+    :return: None.
     """
     ctl = clingo.Control()
     ctl.add("base", [], """\
@@ -34,18 +39,49 @@ def asp_manual():
         #include "asp/main.lp". 
         """)
     ctl.ground([("base", [])])
-    ctl.solve(on_model=on_model)
+    ctl.solve(on_model=asp_prettier)
+
+
+def asp_random():
+    """
+    f
+    """
+    dimension = random.randint(3,5)
+    def casual(turn = False):
+        """
+        """
+        if turn:
+            return random.randint(0, dimension)
+        return random.randint(1,dimension)
+
+    ctl = clingo.Control()
+    boardl =  f"boardl({dimension})."
+    starting_points = ""
+    model = """#include "asp/main.lp"."""
+    for i in range(2, casual()):
+        starting_points += f"number({casual()},{casual()},{casual()})."
+    ctl.add("base", [], boardl + starting_points + model)
+    ctl.ground([("base", [])])
+    print(f'The dimension of the board is: {dimension}. \n')
+    print(f'The starting points are: {starting_points} \n')
+    ctl.solve(on_model=asp_prettier)
 
 def main(tool, mode):
     """
     Entrypoint of the program.
     :param tool: the tool to use, either ASP or MiniZinc.
     :param mode: if the input is manual or random.
+    :return: None.
     """
 
     if tool == "asp":
         if mode == "manual":
             asp_manual()
+        elif mode == "random":
+            asp_random()
+
+    elif tool == "minizinc":
+        pass
 
 
 def init():

@@ -9,6 +9,12 @@ grid(1..D, 1..D) :-boardl(D).
 connected(start(X1,Y1) ,end(X2,Y2)) :- link(start(X1,Y1), end(X2,Y2)).
 connected(start(X1,Y1), end(X2,Y2)) :- connected(start(X1,Y1), end(Z1,Z2)), link(start(Z1,Z2),end(X2,Y2)).
 
+ c(X0, Y0, Z, S1) :-  S1 = #count{link(start(X1, Y1), end(X2, Y2)): connected(start(X0, Y0), end(X1, Y1)), link(start(X2, Y2), end(X3, Y3)), X1 = X2, X2 != X3, Y1!= Y2, Y2 = Y3}, number(X0, Y0, Z).
+ 
+ a(X0, Y0, Z, S2) :- S2 = #count{link(start(X1, Y1), end(X2, Y2)): connected(start(X0, Y0), end(X1, Y1)), link(start(X2, Y2), end(X3, Y3)), Y1 = Y2, Y2 != Y3, X1!= X2, X2 = X3}, number(X0, Y0, Z).
+
+ number(N) :- N = #count{grid(X,Y): number(X,Y, _)}.
+
 % Test
 
 :- goal(X, Y), number(X, Y, _). %the goal point can't be one of the start points 
@@ -31,11 +37,9 @@ connected(start(X1,Y1), end(X2,Y2)) :- connected(start(X1,Y1), end(Z1,Z2)), link
 
 :- link(start(X1, Y1), end(X2, Y2)), link(start(X2,Y2), end(X1, Y1)). % don't really like loops
 
- c(X0, Y0, Z, S1) :-  S1 = #count{link(start(X1, Y1), end(X2, Y2)): connected(start(X0, Y0), end(X1, Y1)), link(start(X2, Y2), end(X3, Y3)), X1 = X2, X2 != X3, Y1!= Y2, Y2 = Y3}, number(X0, Y0, Z).
- 
- a(X0, Y0, Z, S2) :- S2 = #count{link(start(X1, Y1), end(X2, Y2)): connected(start(X0, Y0), end(X1, Y1)), link(start(X2, Y2), end(X3, Y3)), Y1 = Y2, Y2 != Y3, X1!= X2, X2 = X3}, number(X0, Y0, Z).
-
  :- a(X, Y, Z, S1), c(X, Y, Z, S2), S1 + S2 != Z.
+
+ :- number(N), N < 2.
 
 % Display
 
