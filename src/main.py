@@ -44,10 +44,15 @@ def asp_manual():
 def asp_random():
     """
     Random instances for ASP. A random instance is generated and printed. It includes the dimension of the board, the number of starting points, the position of the points and the turns they have to make. For obvious reasons not all instances will have a solution.
+    :return: None.
     """
     dimension = random.randint(3,5)
     def casual(turn = False, number_of_starting_points = False):
         """
+        Generate a random number.
+        :param turn: if the number is for the turn this can be also 0, and maximum the dimension of the board.
+        :param number_of_starting_points: if the number is for the number of starting points those have to be at least two.
+        :return: the random number.
         """
         if turn:
             return random.randint(0, dimension)
