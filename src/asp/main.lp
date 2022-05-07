@@ -1,6 +1,3 @@
-% Generate
-#include "data/input.lp".
-
 % Define
 
 grid(1..D, 1..D) :-boardl(D).

@@ -26,7 +26,7 @@ def clingo_manual():
 
     """
     ctl = clingo.Control()
-    ctl.add("base", [], """ #include "asp/main.lp". """)
+    ctl.add("base", [], """ #include "asp/data/input.lp". #include "asp/main.lp". """)
     ctl.ground([("base", [])])
     ctl.solve(on_model=on_model)
 
