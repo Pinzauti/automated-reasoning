@@ -66,7 +66,8 @@ def asp_random():
     print(f'The starting points are: \n')
     for starting_point in starting_points[:-1].split('.'):
         print(f'{starting_point} \n')
-    ctl.solve(on_model=asp_prettier, yield_=True)
+    if "UNSAT" in str(ctl.solve(on_model=asp_prettier)):
+        print("No solution found. \n")
 
 
 def main(tool, mode):
