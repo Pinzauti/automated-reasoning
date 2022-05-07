@@ -37,7 +37,8 @@ def asp_manual():
         #include "asp/main.lp". 
         """)
     ctl.ground([("base", [])])
-    ctl.solve(on_model=asp_prettier)
+    if "UNSAT" in str(ctl.solve(on_model=asp_prettier)):
+        print("No solution found. \n")
 
 
 def asp_random():

@@ -13,7 +13,7 @@ connected(start(X1,Y1), end(X2,Y2)) :- connected(start(X1,Y1), end(Z1,Z2)), link
  
  a(X0, Y0, Z, S2) :- S2 = #count{link(start(X1, Y1), end(X2, Y2)): connected(start(X0, Y0), end(X1, Y1)), link(start(X2, Y2), end(X3, Y3)), Y1 = Y2, Y2 != Y3, X1!= X2, X2 = X3}, number(X0, Y0, Z).
 
- sanitize(N) :- N = #count{grid(X,Y): number(X,Y, _)}.
+ check(N) :- N = #count{grid(X,Y): number(X,Y, _)}.
 
 % Test
 
@@ -39,7 +39,7 @@ connected(start(X1,Y1), end(X2,Y2)) :- connected(start(X1,Y1), end(Z1,Z2)), link
 
  :- a(X, Y, Z, S1), c(X, Y, Z, S2), S1 + S2 != Z.
 
- :- sanitize(N), N < 2.
+ :- check(N), N < 2.
 
 % Display
 
