@@ -17,15 +17,13 @@ def asp_prettier(m):
     links = re.findall(r'link\(start\(\d,\d\),end\(\d,\d\)\)', str(m))
 
     if goal_point:
-        print(f"The intersecion point is:{goal_point.group()} \n") 
+        print(f"The intersecion point is: {goal_point.group()} \n")      
      
     if links:
         print("The links to get to the intersection points are the following: \n")
         for link in links:
             print(link + '\n')
-
-    if not goal_point and not links:
-        print("No solution found. \n")
+       
 
 
 def asp_manual():
@@ -47,24 +45,29 @@ def asp_random():
     f
     """
     dimension = random.randint(3,5)
-    def casual(turn = False):
+    def casual(turn = False, number_of_starting_points = False):
         """
         """
         if turn:
             return random.randint(0, dimension)
+        if number_of_starting_points:
+            return random.randint(2,dimension)
         return random.randint(1,dimension)
 
     ctl = clingo.Control()
     boardl =  f"boardl({dimension})."
     starting_points = ""
     model = """#include "asp/main.lp"."""
-    for i in range(2, casual()):
-        starting_points += f"number({casual()},{casual()},{casual()})."
+    for _ in range(0, casual(number_of_starting_points=True)):
+        starting_points += f"number({casual()},{casual()},{casual(turn=True)})."
     ctl.add("base", [], boardl + starting_points + model)
     ctl.ground([("base", [])])
-    print(f'The dimension of the board is: {dimension}. \n')
-    print(f'The starting points are: {starting_points} \n')
-    ctl.solve(on_model=asp_prettier)
+    print(f'The dimension of the board is {dimension}. \n')
+    print(f'The starting points are: \n')
+    for starting_point in starting_points[:-1].split('.'):
+        print(f'{starting_point} \n')
+    ctl.solve(on_model=asp_prettier, yield_=True)
+
 
 def main(tool, mode):
     """
