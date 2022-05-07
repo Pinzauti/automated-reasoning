@@ -1,12 +1,12 @@
-ASP = python main.py asp
+ASP-MANUAL = python main.py --tool=asp --mode=manual
 MINIZINC = python main.py minizinc
 
 default:
 	@echo Hi, 
 	@echo df
 
-asp1:
-	${ASP}
+asp-manual:
+	${ASP-MANUAL}
 
 minizinc:
 	${MINIZINC}

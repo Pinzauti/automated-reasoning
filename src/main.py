@@ -2,11 +2,8 @@
 entrypoint
 """
 import argparse
-import random
 import re
-from clingo.control import Control
-from clingo.symbol import Function
-from clingo.symbol import Number
+import clingo
 
 
 def on_model(m):
@@ -24,23 +21,26 @@ def on_model(m):
             print(link + '\n')
 
 
-def main(tool):
+def clingo_manual():
+    """
 
-    dimension = 3
+    """
+    ctl = clingo.Control()
+    ctl.add("base", [], """ #include "asp/main.lp". """)
+    ctl.ground([("base", [])])
+    ctl.solve(on_model=on_model)
 
-    def casual(turn = False):
-        if turn:
-            return Number(random.randint(0, dimension - 2))
-        return Number(random.randint(1, dimension))
+def main(tool, mode):
+    """
+    Main function.
+    :param tool: 
+    :param mode: 
+    """
 
-    ctl = Control()
-    ctl.add("base", [], """\
-        boardl(3).
-        number(1,1,1). number(2,1,1). number(3,3,0).
-    #include "asp/main.lp". """)
+    if tool == "asp":
+        if mode == "manual":
+            clingo_manual()
 
-    ctl.ground([("base", [])])    
-    print(ctl.solve(on_model=on_model))
 
 def init():
     """
@@ -48,9 +48,15 @@ def init():
     :return: None.
     """
     parser = argparse.ArgumentParser(description="Start the project.")
-    parser.add_argument("tool",
+    parser.add_argument("--tool",
                         choices=["asp", "minizinc"],
                         help="Choose between ASP and MiniZinc.")
-    main(tool=parser.parse_args().tool)
+    parser.add_argument("--mode",
+                        choices=["manual", "random"],
+                        help="Choose if the input is manual or random.")
+    main(
+        tool=parser.parse_args().tool,
+        mode=parser.parse_args().mode
+        )
 
 init()
