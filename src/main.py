@@ -1,5 +1,5 @@
 """
-entrypoint
+Here are the main function to generate random instances, to load manually inserted instances, and to execute the models in APS and Minizinc.
 """
 import argparse
 import clingo
@@ -28,7 +28,7 @@ def asp_prettier(m):
 
 def asp_manual():
     """
-    Manual input for ASP. You can modify the input file located in asp/data/input.lp.
+    Manual instances for ASP. You can modify the input file located in asp/data/input.lp.
     :return: None.
     """
     ctl = clingo.Control()
@@ -43,7 +43,7 @@ def asp_manual():
 
 def asp_random():
     """
-    f
+    Random instances for ASP. A random instance is generated and printed. It includes the dimension of the board, the number of starting points, the position of the points and the turns they have to make. For obvious reasons not all instances will have a solution.
     """
     dimension = random.randint(3,5)
     def casual(turn = False, number_of_starting_points = False):
