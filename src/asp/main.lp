@@ -9,17 +9,13 @@ grid(1..D, 1..D) :-boardl(D).
 connected(start(X1,Y1) ,end(X2,Y2)) :- link(start(X1,Y1), end(X2,Y2)).
 connected(start(X1,Y1), end(X2,Y2)) :- connected(start(X1,Y1), end(Z1,Z2)), link(start(Z1,Z2),end(X2,Y2)).
 
- c(X0, Y0, Z, S1) :-  S1 = #count{link(start(X1, Y1), end(X2, Y2)): connected(start(X0, Y0), end(X1, Y1)), link(start(X2, Y2), end(X3, Y3)), X1 = X2, X2 != X3, Y1!= Y2, Y2 = Y3}, number(X0, Y0, Z).
- 
- a(X0, Y0, Z, S2) :- S2 = #count{link(start(X1, Y1), end(X2, Y2)): connected(start(X0, Y0), end(X1, Y1)), link(start(X2, Y2), end(X3, Y3)), Y1 = Y2, Y2 != Y3, X1!= X2, X2 = X3}, number(X0, Y0, Z).
-
- check(N) :- N = #count{grid(X,Y): number(X,Y, _)}.
-
 % Test
+
+:- #count{grid(X,Y): number(X,Y, _)} < 2. %there can't be only one starting point
 
 :- goal(X, Y), number(X, Y, _). %the goal point can't be one of the start points 
 
-:- goal(X, Y), not connected(start(X0, Y0), end(X,Y)), number(X0,Y0, _). %the goal must be connected with the starting points.
+:- goal(X, Y), not connected(start(X0, Y0), end(X,Y)), number(X0,Y0, _). %the goal must be connected with the starting points
 
 :- link(start(X0, Y0), end(X1, Y1)), number(X1, Y1, _). %there can't be a link ending in a starting point
 
@@ -37,9 +33,10 @@ connected(start(X1,Y1), end(X2,Y2)) :- connected(start(X1,Y1), end(Z1,Z2)), link
 
 :- link(start(X1, Y1), end(X2, Y2)), link(start(X2,Y2), end(X1, Y1)). % don't really like loops
 
- :- a(X, Y, Z, S1), c(X, Y, Z, S2), S1 + S2 != Z.
+:- link(_, end(X0,Y0)), not connected(start(X0,Y0), end(X, Y)), goal(X, Y), not goal(X0,Y0). % links have to be connected to the goal
 
- :- check(N), N < 2.
+:- #count{grid(X2,Y2), grid(X3, Y3): link(start(X1, Y1), end(X2, Y2)), link(start(X2, Y2), end(X3, Y3)), |X1-X3| = 1, |Y1-Y3| = 1, connected(start(X0, Y0), end(X1, Y1));
+grid(X2,Y2), grid(X3, Y3): link(start(X0, Y0), end(X2, Y2)), link(start(X2, Y2), end(X3, Y3)), |X0-X3| = 1, |Y0-Y3| = 1} != Z, number(X0, Y0, Z). %number of turns per each path should be as perscribed in each starting point
 
 % Display
 

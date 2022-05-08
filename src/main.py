@@ -43,7 +43,7 @@ def asp_manual():
 
 def asp_random():
     """
-    Random instances for ASP. A random instance is generated and printed. It includes the dimension of the board, the number of starting points, the position of the points and the turns they have to make. For obvious reasons not all instances will have a solution.
+    Random instances for ASP. A random instance is generated and printed in an human readable way. It includes the dimension of the board, the number of starting points, the position of the points and the turns they have to make. For obvious reasons not all instances will have a solution.
     :return: None.
     """
     dimension = random.randint(3,5)
