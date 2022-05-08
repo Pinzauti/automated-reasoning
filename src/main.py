@@ -1,10 +1,11 @@
 """
-Here are the main function to generate random instances, to load manually inserted instances, and to execute the models in APS and Minizinc.
+Here are the main function to generate random instances, to load manually inserted instances, and to execute the models
+in APS and Minizinc.
 """
 import argparse
-import clingo
-import re
 import random
+import re
+import clingo
 
 
 def asp_prettier(m):
@@ -17,13 +18,12 @@ def asp_prettier(m):
     links = re.findall(r'link\(start\(\d,\d\),end\(\d,\d\)\)', str(m))
 
     if goal_point:
-        print(f"An intersection point is: {goal_point.group()} \n")      
-     
+        print(f"An intersection point is: {goal_point.group()} \n")
+
     if links:
         print("The links to get to the intersection point are the following: \n")
         for link in links:
             print(link + '\n')
-       
 
 
 def asp_manual():
@@ -44,26 +44,30 @@ def asp_manual():
 
 def asp_random():
     """
-    Random instances for ASP. A random instance is generated and printed in an human readable way. It includes the dimension of the board, the number of starting points, the position of the points and the turns they have to make. For obvious reasons not all instances will have a solution.
+    Random instances for ASP. A random instance is generated and printed in an human readable way. It includes the
+    dimension of the board, the number of starting points, the position of the points and the turns they have to make.
+    For obvious reasons not all instances will have a solution.
     :return: None.
     """
-    dimension = random.randint(3,5)
-    def casual(turns = False, number_of_starting_points = False):
+    dimension = random.randint(3, 5)
+
+    def casual(turns=False, number_of_starting_points=False):
         """
         Generate a random number.
         :param turn: if the number is for the turn this can be also 0, and maximum the dimension of the board.
-        :param number_of_starting_points: if the number is for the number of starting points those have to be at least two.
+        :param number_of_starting_points: if the number is for the number of starting points those have to be at least
+        two.
         :return: the random number.
         """
         if turns:
             return random.randint(0, dimension)
         if number_of_starting_points:
-            return random.randint(2,dimension)
-        return random.randint(1,dimension)
+            return random.randint(2, dimension)
+        return random.randint(1, dimension)
 
     ctl = clingo.Control()
     ctl.configuration.solve.models = 0
-    boardl =  f"boardl({dimension})."
+    boardl = f"boardl({dimension})."
     starting_points = ""
     model = """#include "asp/main.lp"."""
     for _ in range(0, casual(number_of_starting_points=True)):
@@ -101,7 +105,8 @@ def init():
     It collects the arguments to pass to the main function, which is then called.
     :return: None.
     """
-    parser = argparse.ArgumentParser(description="In order to start the project choose between ASP and MiniZinc and between manual or random mode.")
+    parser = argparse.ArgumentParser(
+        description="In order to start the project choose between ASP and MiniZinc and between manual or random mode.")
     parser.add_argument('tool',
                         choices=["asp", "minizinc"],
                         help="Choose between ASP and MiniZinc.")
@@ -111,6 +116,7 @@ def init():
     main(
         tool=parser.parse_args().tool,
         mode=parser.parse_args().mode,
-        )
+    )
+
 
 init()
