@@ -1,4 +1,3 @@
-HELP = python3 main.py -h
 VENV = env
 
 ifeq ($(OS), Windows_NT)
@@ -13,6 +12,7 @@ endif
 ASP-MANUAL = ${PYTHON} main.py asp manual
 ASP-RANDOM = ${PYTHON} main.py asp random
 MINIZINC = ${PYTHON} main.py minizinc
+HELP = ${PYTHON} main.py -h
 
 default:
 	@echo Hello there, if you need any help just write make help.
