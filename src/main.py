@@ -26,13 +26,14 @@ def asp_prettier(m):
             print(link + '\n')
 
 
-def asp_manual():
+def asp_manual(solutions_number):
     """
     Manual instances for ASP. You can modify the input file located in asp/data/input.lp.
+    :param solutions_number: choose if you want to see all solutions or just the first one.
     :return: None.
     """
     ctl = clingo.Control()
-    ctl.configuration.solve.models = 0
+    ctl.configuration.solve.models = solutions_number if solutions_number else 0
     ctl.add("base", [], """\
         #include "asp/data/input.lp". 
         #include "asp/main.lp". 
@@ -42,13 +43,14 @@ def asp_manual():
         print("No solution found. \n")
 
 
-def asp_random(user_dimension, number):
+def asp_random(user_dimension, number, solutions_number):
     """
     Random instances for ASP. A random instance is generated and printed in an human readable way. It includes the
     dimension of the board, the number of starting points, the position of the points and the turns they have to make.
     For obvious reasons not all instances will have a solution.
     :param number: the number of starting points defined by the user, used in random mode.
     :param user_dimension: the dimension of the board defined by the user, used in random mode.
+    :param solutions_number: choose if you want to see all solutions or just the first one.
     :return: None.
     """
     if user_dimension:
@@ -74,7 +76,7 @@ def asp_random(user_dimension, number):
         return random.randint(1, dimension)
 
     ctl = clingo.Control()
-    ctl.configuration.solve.models = 0
+    ctl.configuration.solve.models = solutions_number if solutions_number else 0
     boardl = f"boardl({dimension})."
     starting_points = ""
     model = """#include "asp/main.lp"."""
@@ -90,9 +92,10 @@ def asp_random(user_dimension, number):
         print("No solution found. \n")
 
 
-def main(tool, mode, dimension, number):
+def main(tool, mode, dimension, number, solutions_number):
     """
     Entrypoint of the program.
+    :param solutions_number: choose if you want to see all solutions or just the first one.
     :param number: the number of starting points defined by the user, used in random mode.
     :param dimension: the dimension of the board defined by the user, used in random mode.
     :param tool: the tool to use, either ASP or MiniZinc.
@@ -113,9 +116,9 @@ def main(tool, mode, dimension, number):
 
     if tool == "asp":
         if mode == "manual":
-            asp_manual()
+            asp_manual(solutions_number)
         elif mode == "random":
-            asp_random(dimension, number)
+            asp_random(dimension, number, solutions_number)
 
     elif tool == "minizinc":
         pass
@@ -144,11 +147,16 @@ def init():
                         '--number',
                         type=int,
                         help="Choose the number of starting points.")
+    parser.add_argument('-s',
+                        '--solutions',
+                        type=int,
+                        help="Choose the number of solutions you want to see.")
     main(
         tool=parser.parse_args().tool,
         mode=parser.parse_args().mode,
         dimension=parser.parse_args().dimension,
-        number=parser.parse_args().number
+        number=parser.parse_args().number,
+        solutions_number=parser.parse_args().solutions
     )
 
 

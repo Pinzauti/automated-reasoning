@@ -1,7 +1,7 @@
-HELP = python main.py -h
-ASP-MANUAL = python main.py asp manual
-ASP-RANDOM = python main.py asp random
-MINIZINC = python main.py minizinc
+HELP = python3 main.py -h
+ASP-MANUAL = python3 main.py asp manual
+ASP-RANDOM = python3 main.py asp random
+MINIZINC = python3 main.py minizinc
 
 VENV = env
 
@@ -23,10 +23,9 @@ help:
 	${HELP}
 
 asp-manual:
-	${ASP-MANUAL}
+	@${ASP-MANUAL} $(if $(-n),-n=$(n))
 
 asp-random:
-	${ASP-RANDOM} $(if $(d),-d=$(d)) $(if $(n),-n=$(n))
-
+	${ASP-RANDOM} $(if $(d),-d=$(d)) $(if $(n),-n=$(n)) $(if $(a),-a=$(a))
 minizinc:
-	${MINIZINC}
+	@${MINIZINC}
