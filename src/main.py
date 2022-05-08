@@ -127,7 +127,9 @@ def init():
     :return: None.
     """
     parser = argparse.ArgumentParser(
-        description="In order to start the project choose between ASP and MiniZinc and between manual or random mode.")
+        description="In order to start the project choose between ASP and MiniZinc and between manual or random mode."
+                    "If you want to use the random mode you can also choose the dimension and the number of starting"
+                    "points")
     parser.add_argument('tool',
                         choices=["asp", "minizinc"],
                         help="Choose between ASP and MiniZinc.")
