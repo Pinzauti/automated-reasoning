@@ -48,14 +48,14 @@ def asp_random():
     :return: None.
     """
     dimension = random.randint(3,5)
-    def casual(turn = False, number_of_starting_points = False):
+    def casual(turns = False, number_of_starting_points = False):
         """
         Generate a random number.
         :param turn: if the number is for the turn this can be also 0, and maximum the dimension of the board.
         :param number_of_starting_points: if the number is for the number of starting points those have to be at least two.
         :return: the random number.
         """
-        if turn:
+        if turns:
             return random.randint(0, dimension)
         if number_of_starting_points:
             return random.randint(2,dimension)
@@ -67,10 +67,10 @@ def asp_random():
     starting_points = ""
     model = """#include "asp/main.lp"."""
     for _ in range(0, casual(number_of_starting_points=True)):
-        starting_points += f"number({casual()},{casual()},{casual(turn=True)})."
+        starting_points += f"number({casual()},{casual()},{casual(turns=True)})."
     ctl.add("base", [], boardl + starting_points + model)
     ctl.ground([("base", [])])
-    print(f'The dimension of the board is {dimension}. \n')
+    print(f'\nThe dimension of the board is {dimension}. \n')
     print(f'The starting points are: \n')
     for starting_point in starting_points[:-1].split('.'):
         print(f'{starting_point} \n')
