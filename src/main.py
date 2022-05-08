@@ -17,10 +17,10 @@ def asp_prettier(m):
     links = re.findall(r'link\(start\(\d,\d\),end\(\d,\d\)\)', str(m))
 
     if goal_point:
-        print(f"The intersecion point is: {goal_point.group()} \n")      
+        print(f"An intersection point is: {goal_point.group()} \n")      
      
     if links:
-        print("The links to get to the intersection points are the following: \n")
+        print("The links to get to the intersection point are the following: \n")
         for link in links:
             print(link + '\n')
        
@@ -32,6 +32,7 @@ def asp_manual():
     :return: None.
     """
     ctl = clingo.Control()
+    ctl.configuration.solve.models = 0
     ctl.add("base", [], """\
         #include "asp/data/input.lp". 
         #include "asp/main.lp". 
@@ -61,6 +62,7 @@ def asp_random():
         return random.randint(1,dimension)
 
     ctl = clingo.Control()
+    ctl.configuration.solve.models = 0
     boardl =  f"boardl({dimension})."
     starting_points = ""
     model = """#include "asp/main.lp"."""
