@@ -26,7 +26,7 @@ asp-manual:
 	${ASP-MANUAL}
 
 asp-random:
-	${ASP-RANDOM}
+	${ASP-RANDOM} $(if $(d),-d=$(d)) $(if $(n),-n=$(n))
 
 minizinc:
 	${MINIZINC}

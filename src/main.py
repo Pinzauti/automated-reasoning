@@ -42,19 +42,24 @@ def asp_manual():
         print("No solution found. \n")
 
 
-def asp_random():
+def asp_random(user_dimension, number):
     """
     Random instances for ASP. A random instance is generated and printed in an human readable way. It includes the
     dimension of the board, the number of starting points, the position of the points and the turns they have to make.
     For obvious reasons not all instances will have a solution.
+    :param number: the number of starting points defined by the user, used in random mode.
+    :param user_dimension: the dimension of the board defined by the user, used in random mode.
     :return: None.
     """
-    dimension = random.randint(3, 5)
+    if user_dimension:
+        dimension = user_dimension
+    else:
+        dimension = random.randint(3, 5)
 
     def casual(turns=False, number_of_starting_points=False):
         """
         Generate a random number.
-        :param turn: if the number is for the turn this can be also 0, and maximum the dimension of the board.
+        :param turns: if the number is for the turn this can be also 0, and maximum the dimension of the board.
         :param number_of_starting_points: if the number is for the number of starting points those have to be at least
         two.
         :return: the random number.
@@ -62,7 +67,10 @@ def asp_random():
         if turns:
             return random.randint(0, dimension)
         if number_of_starting_points:
-            return random.randint(2, dimension)
+            if number:
+                return number
+            else:
+                return random.randint(2, dimension)
         return random.randint(1, dimension)
 
     ctl = clingo.Control()
@@ -82,19 +90,32 @@ def asp_random():
         print("No solution found. \n")
 
 
-def main(tool, mode):
+def main(tool, mode, dimension, number):
     """
     Entrypoint of the program.
+    :param number: the number of starting points defined by the user, used in random mode.
+    :param dimension: the dimension of the board defined by the user, used in random mode.
     :param tool: the tool to use, either ASP or MiniZinc.
     :param mode: if the input is manual or random.
     :return: None.
     """
 
+    if dimension  and dimension < 2:
+        print("The dimension of the board must be at least 2. \n")
+        return
+    elif dimension and dimension > 7:
+        print("Better not to go above seven. \n")
+        return
+
+    if number and number < 2:
+        print("The number of starting points must be at least 2. \n")
+        return
+
     if tool == "asp":
         if mode == "manual":
             asp_manual()
         elif mode == "random":
-            asp_random()
+            asp_random(dimension, number)
 
     elif tool == "minizinc":
         pass
@@ -113,9 +134,19 @@ def init():
     parser.add_argument('mode',
                         choices=["manual", "random"],
                         help="Choose if the input is manual or random.")
+    parser.add_argument('-d',
+                        '--dimension',
+                        type=int,
+                        help="Choose the dimension of the board.")
+    parser.add_argument('-n',
+                        '--number',
+                        type=int,
+                        help="Choose the number of starting points.")
     main(
         tool=parser.parse_args().tool,
         mode=parser.parse_args().mode,
+        dimension=parser.parse_args().dimension,
+        number=parser.parse_args().number
     )
 
 
