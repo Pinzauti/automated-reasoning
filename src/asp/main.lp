@@ -40,7 +40,7 @@ connected(start(X1,Y1), end(X2,Y2)) :- connected(start(X1,Y1), end(Z1,Z2)), link
 :- link(_, end(X1,Y1)), not connected(start(X1,Y1), end(X, Y)), goal(X, Y), not goal(X1,Y1). % Links have to be connected to the goal.
 
 :- #count{grid(X2,Y2), grid(X3, Y3): link(start(X1, Y1), end(X2, Y2)), link(start(X2, Y2), end(X3, Y3)), |X1-X3| = 1, |Y1-Y3| = 1, connected(start(X0, Y0), end(X1, Y1));
-grid(X2,Y2), grid(X3, Y3): link(start(X0, Y0), end(X2, Y2)), link(start(X2, Y2), end(X3, Y3)), |X0-X3| = 1, |Y0-Y3| = 1} != Z, number(X0, Y0, Z). % Number of turns per each path should be as perscribed in each starting point.
+grid(X2,Y2), grid(X3, Y3): link(start(X0, Y0), end(X2, Y2)), link(start(X2, Y2), end(X3, Y3)), |X0-X3| = 1, |Y0-Y3| = 1} != T, number(X0, Y0, T). % Number of turns per each path should be as perscribed in each starting point.
 
 % Display
 

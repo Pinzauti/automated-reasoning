@@ -8,7 +8,6 @@ else
 	PYTHON = ./$(VENV)/bin/python
 endif
 
-
 ASP-MANUAL = ${PYTHON} main.py asp manual
 ASP-RANDOM = ${PYTHON} main.py asp random
 MINIZINC = ${PYTHON} main.py minizinc
