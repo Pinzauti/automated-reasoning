@@ -21,7 +21,7 @@ connected(start(X1,Y1), end(X2,Y2)) :- connected(start(X1,Y1), end(Z1,Z2)), link
 
 :- goal(X, Y), not connected(start(X0, Y0), end(X,Y)), number(X0,Y0, _). % The goal must be connected with all the starting points.
 
-:- link(start(X1, Y1), end(X0, Y0)), number(X0, Y0, _). % There can't be a link ending in a starting point.
+:- link(_, end(X0, Y0)), number(X0, Y0, _). % There can't be a link ending in a starting point.
 
 :- link(start(X,Y), _), not link(_, end(X,Y)), not number(X,Y, _).% A link can only start when another link end or at the starting point.
 
