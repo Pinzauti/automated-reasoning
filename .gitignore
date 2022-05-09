@@ -1,3 +1,8 @@
+# Remove the inputs
+
+asp/data/
+minizinc/data/
+
 .vscode/
 src/.idea/
 src/env/
