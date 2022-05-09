@@ -1,7 +1,7 @@
 # Remove the inputs
 
-asp/data/
-minizinc/data/
+src/asp/data/
+src/minizinc/data/
 
 .vscode/
 src/.idea/
