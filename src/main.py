@@ -36,7 +36,7 @@ def asp_manual(solutions_number):
     ctl.configuration.solve.models = solutions_number if solutions_number else 0
     ctl.add("base", [], """\
         #include "asp/data/input.lp". 
-        #include "asp/main.lp". 
+        #include "asp/model.lp". 
         """)
     ctl.ground([("base", [])])
     if "UNSAT" in str(ctl.solve(on_model=asp_prettier)):
@@ -79,7 +79,7 @@ def asp_random(user_dimension, number, solutions_number):
     ctl.configuration.solve.models = solutions_number if solutions_number else 0
     boardl = f"boardl({dimension})."
     starting_points = ""
-    model = """#include "asp/main.lp"."""
+    model = """#include "asp/model.lp"."""
     for _ in range(0, casual(number_of_starting_points=True)):
         starting_points += f"number({casual()},{casual()},{casual(turns=True)})."
     ctl.add("base", [], boardl + starting_points + model)
