@@ -10,26 +10,24 @@ array[D, D] of var D: Board;
 %predicate next(int: x1, int: y1, int: x2, int: y2) =
 % |X1 - X2| + |Y1 - Y2| = 1;
 
-predicate connected(par int: X1, par int: Y1, var int: X2, var int: Y2) =
+
+predicate connection_check(par int: X1, par int: Y1, par int: X2, par int: Y2, par int: dim) =
+abs(X1 - X2) + abs(Y1 - Y2) = 1 \/ %not sure if it is redundant, should think about it
+exists(Z1, Z2 in dim..dim+1 where abs(Z1 - X2) + abs(Z2 - Y2) = 1 /\ dim < dimension)(
+connected(X1,Y1,Z1,Z2)
+) \/
+connection_check(X1, Y1, X2, Y2, dim+1)
+;
+
+
+predicate connected(par int: X1, par int: Y1, par int: X2, par int: Y2) =
 abs(X1 - X2) + abs(Y1 - Y2) = 1 \/
-exists(Z1, Z2 in 1..2 where abs(Z1 - X2) + abs(Z2 - Y2) = 1)(
-connected(X1,Y1,Z1,Z2)
-) 
-\/ 
-
-
-forall(i in 2..dimension)(
-
-exists(Z1, Z2 in i-1..i where abs(Z1 - X2) + abs(Z2 - Y2) = 1)(
-connected(X1,Y1,Z1,Z2)
-) 
-
-)
+connection_check(X1,Y1,X2,Y2,1)
 ;
 
 constraint(
 
-connected(1, 1, 2, 3)
+connected(1, 1, 3, 3)
 
 );
 %constraint forall (i,j in D)(
