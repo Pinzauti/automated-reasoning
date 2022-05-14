@@ -3,27 +3,46 @@ par int: N; %Number of starting points
 array[1..N, 1..3] of par 0..N: number; %These are the starting point, first two element are the coordinates X and Y and the last element is the number of turn that the starting point have to make to arrive to the intersection.
 
 
-array[D, D] of var D: BoardX;
-array[D, D] of var D: BoardY;
+array[D, D] of var D: Board;
 
-var D: GoalX; var D: GoalY; % X and Y variables of the intersection point.
-var 1..dimension*dimension: step; %Numbers of step can't be greater than the number of cells in the board.
+%var 1..dimension*dimension: step; %Numbers of step can't be greater than the number of cells in the board.
 
 %predicate next(int: x1, int: y1, int: x2, int: y2) =
 % |X1 - X2| + |Y1 - Y2| = 1;
 
+predicate connected(par int: X1, par int: Y1, var int: X2, var int: Y2) =
+abs(X1 - X2) + abs(Y1 - Y2) = 1 \/
+exists(Z1, Z2 in 1..2 where abs(Z1 - X2) + abs(Z2 - Y2) = 1)(
+connected(X1,Y1,Z1,Z2)
+) 
+\/ 
 
-constraint forall (i,j in D)(
-  abs(i - BoardX[i, j]) + abs(j - BoardY[i, j] ) = 1 \/ (i=GoalX /\ j=GoalY)
-);
 
-predicate connected(int: i, int: j) = 
-  abs(i - BoardX[i, j]) + abs(j - BoardY[i, j] ) = 1 \/ (i=GoalX /\ j=GoalY)
+forall(i in 2..dimension)(
+
+exists(Z1, Z2 in i-1..i where abs(Z1 - X2) + abs(Z2 - Y2) = 1)(
+connected(X1,Y1,Z1,Z2)
+) 
+
+)
 ;
 
-constraint forall(n in 1..N)(
-    connected(number[n,1], number[n,2])
+constraint(
+
+connected(1, 1, 2, 3)
+
 );
+%constraint forall (i,j in D)(
+%  abs(i - BoardX[i, j]) + abs(j - BoardY[i, j] ) = 1 \/ (i=GoalX /\ j=GoalY)
+%);
+
+%predicate connected(int: i, int: j) = 
+%  abs(i - BoardX[i, j]) + abs(j - BoardY[i, j] ) = 1 \/ (i=GoalX /\ j=GoalY)
+%;
+
+%constraint forall(n in 1..N)(
+%    connected(number[n,1], number[n,2])
+%);
 
 %constraint forall (s in step) (
  % exists(i,j in D) (
@@ -41,19 +60,4 @@ constraint forall(n in 1..N)(
 %);
 
 solve satisfy;
-
-output["The intersectino point is: (", show(GoalX), ",", show(GoalY), ")\n"];
-output 
-[
-  if j = 1 then "\n" else " " endif ++
-  show(BoardX[i,j])
-  | i,j in D
-] ++ ["\n"];
-
-output 
-[
-  if j = 1 then "\n" else " " endif ++
-  show(BoardY[i,j])
-  | i,j in D
-] ++ ["\n"];
 
