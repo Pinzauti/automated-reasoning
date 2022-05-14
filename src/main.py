@@ -61,9 +61,9 @@ def asp_random(user_dimension, number, solutions_number):
     def casual(turns=False, number_of_starting_points=False):
         """
         Generate a random number.
-        :param turns: if the number is for the turn this can be also 0, and maximum the dimension of the board.
+        :param turns: if the number is for the turn this can be minimum 0 and maximum the dimension of the board.
         :param number_of_starting_points: if the number is for the number of starting points those have to be at least
-        two.
+        two and can be maximum 4.
         :return: the random number.
         """
         if turns:
@@ -72,7 +72,7 @@ def asp_random(user_dimension, number, solutions_number):
             if number:
                 return number
             else:
-                return random.randint(2, dimension)
+                return random.randint(2, 5)
         return random.randint(1, dimension)
 
     ctl = clingo.Control()
