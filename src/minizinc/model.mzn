@@ -8,20 +8,47 @@ array[D, D, 1..2] of var 0..12: Board; % This is the DxD board. In the first dim
 
 
 constraint(
+% Bottom-left position
 if Board[dimension,1, 1] = 12 then 
+% Up move
 ((Board[dimension - 1, 1, 1] = 4 \/  Board[dimension - 1, 1, 1]  = 6 \/  Board[dimension - 1, 1, 1]  = 10) /\ Board[dimension - 1, 1, 2] = Board[dimension,1, 2] )
 \/ 
+% Right move
 ((Board[dimension,2, 1] = 1 \/ Board[dimension,2, 1] = 5 \/ Board[dimension,2, 1] = 7) /\  Board[dimension,2, 1] = Board[dimension,1, 1])
 endif
 
 /\
 
+% Bottom right position
 if Board[dimension,dimension, 1] = 12 then
-Board[dimension - 1,dimension, 1] = 2 \/ Board[dimension - 1,dimension, 1] = 6 \/ Board[dimension - 1,dimension, 1] = 9 
+% Up move
+((Board[dimension - 1,dimension, 1] = 2 \/ Board[dimension - 1,dimension, 1] = 6 \/ Board[dimension - 1,dimension, 1] = 9) /\ Board[dimension - 1,dimension, 2] = Board[dimension,dimension, 2])
 \/ 
-Board[dimension,dimension -1, 1] = 3 \/ Board[dimension,dimension -1, 1] = 7
+% Left move
+((Board[dimension,dimension -1, 1] = 3 \/ Board[dimension,dimension -1, 1] = 7) /\ Board[dimension,dimension -1, 2] = Board[dimension,dimension, 2])
 endif
+
+/\
+
+% Bottom position (not bottom left nor bottom right)
+forall(j in 2..(dimension-1)) (
+if Board[dimension, j, 1] = 12 then
+% Up move
+((Board[dimension - 1, j, 1] = 2 \/ Board[dimension - 1, j, 1] = 4 \/ Board[dimension - 1, j, 1] = 6 \/ Board[dimension - 1, j, 1] = 8 \/ Board[dimension - 1, j, 1] = 9 \/ Board[dimension - 1, j, 1] = 10 \/ Board[dimension - 1, j, 1] = 11) /\ Board[dimension - 1, j, 2] = Board[dimension, j, 2])
+\/
+% Left move
+((Board[dimension, j-1,1] = 3 \/ Board[dimension, j-1,1] = 5 \/ Board[dimension, j-1,1] = 7) /\  Board[dimension, j-1,2] = Board[dimension, j, 2])
+\/
+%Right move
+((Board[dimension, j+1,1] = 1 \/ Board[dimension, j+1,1] = 5 \/ Board[dimension, j+1,1] = 7) /\  Board[dimension, j+1,2] = Board[dimension, j, 2])
+endif
+)
+
+
 );
+
+
+
 
 
 % Here we assign the starting points, both in the first dimension of the board (next move) and the second dimension (path). Note that there is a change of notation from the input to the standard array indexing of MiniZinc, which is properly handled. 
