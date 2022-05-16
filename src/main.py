@@ -103,7 +103,7 @@ def main(tool, mode, dimension, number, solutions_number):
     :return: None.
     """
 
-    if dimension  and dimension < 2:
+    if dimension and dimension < 2:
         print("The dimension of the board must be at least 2. \n")
         return
     elif dimension and dimension > 7:
@@ -112,6 +112,9 @@ def main(tool, mode, dimension, number, solutions_number):
 
     if number and number < 2:
         print("The number of starting points must be at least 2. \n")
+        return
+    elif number and number > 4:
+        print("There can't be a valid intersection point with 5 points or more. \n")
         return
 
     if tool == "asp":
