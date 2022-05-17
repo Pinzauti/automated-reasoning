@@ -116,6 +116,23 @@ if Board[i, dimension, 1] = 12 then
 endif
 )
 
+/\
+% Central position
+forall(i,j in 2..(dimension-1))(
+if Board[i, j, 1] = 12 then
+% Up move
+((Board[i + 1, j, 1] = 2 \/ Board[i + 1, j, 1] = 4 \/ Board[i + 1, j, 1] = 6 \/ Board[i + 1, j, 1] = 8 \/ Board[i + 1, j, 1] = 9 \/ Board[i + 1, j, 1] = 10 \/ Board[i + 1, j, 1] =  11) /\ (Board[i + 1, j, 2] = Board[i, j, 2] \/ Board[i + 1, j, 2] = number + 1))
+/\
+% Left move
+((Board[i, j - 1, 1] = 3 \/ Board[i, j - 1, 1] = 4 \/ Board[i, j - 1, 1] = 5 \/ Board[i, j - 1, 1] = 7 \/ Board[i, j - 1, 1] = 8 \/ Board[i, j - 1, 1] = 10 \/ Board[i, j - 1, 1] = 11) /\ (Board[i, j - 1, 2] = Board[i, j, 2] \/Board[i, j - 1, 2] =  number + 1))
+/\
+% Bottom move
+((Board[i + 1, j, 1] = 1 \/ Board[i + 1, j, 1] = 3 \/ Board[i + 1, j, 1] = 6 \/ Board[i + 1, j, 1] = 7 \/ Board[i + 1, j, 1] = 9 \/ Board[i + 1, j, 1] = 10 \/ Board[i + 1, j, 1] = 11) /\ (Board[i + 1, j, 2] = Board[i, j, 2] \/ Board[i + 1, j, 2] = number + 1))
+/\
+% Right move
+((Board[i, j + 1, 1] = 1 \/ Board[i, j + 1, 1] = 2 \/ Board[i, j + 1, 1] = 5 \/ Board[i, j + 1, 1] = 7 \/ Board[i, j + 1, 1] = 8 \/ Board[i, j + 1, 1] = 9 \/ Board[i, j + 1, 1] = 11) /\ (Board[i, j + 1, 2] = Board[i, j, 2] \/ Board[i, j + 1, 2] = number + 1))
+endif
+)
 );
 
 
@@ -124,11 +141,20 @@ constraint(
 if number = 4 then
 let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (MoveBoard[i,j] = Board[i,j, 1]);} in
 count_eq(MoveBoard, 11, 1)
-else
+elseif number = 3 then
 let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (MoveBoard[i,j] = Board[i,j, 1]);} in
 among(1, MoveBoard, 7..10)
+else
+1516=2342 % There can't be more than 4 points!
 endif
 );
+
+% Each path has to do a specific number of turns.
+constraint(
+forall (n in N)(
+let {array[D,D] of var 0..12: PathsBoard; constraint forall(i,j in D) (if  Board[i,j,2] = n then PathsBoard[i,j] = Board[i,j, 1] else PathsBoard[i,j] = 0 endif );} in
+among(starting_points[n,3], PathsBoard, 1..4)
+));
 
 
 % Here we assign the starting points, both in the first dimension of the board (next move) and the second dimension (path). Note that there is a change of notation from the input to the standard array indexing of MiniZinc, which is properly handled. 
@@ -156,5 +182,4 @@ output
 
 % TODO
 % aggiungere i constraint per le mosse che si possono fare dopo una specifica cella
-% aggiungere che un percorso può avere solo un certo numero di turns
-% aggiungere la cella che ci deve essere in base ai punti iniziali
+% Problema di quando ci sono due punti
