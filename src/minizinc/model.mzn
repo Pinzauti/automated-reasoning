@@ -5,16 +5,16 @@ array[N, 1..3] of par 0..number: starting_points; % These are the starting point
 
 array[D, D, 1..2] of var 0..12: Board; % This is the DxD board. In the first dimension we have the next move, in the second dimension to which path the move belongs to.
 
-
+include "globals.mzn";
 
 constraint(
 % Bottom-left position
 if Board[dimension,1, 1] = 12 then 
 % Up move
-((Board[dimension - 1, 1, 1] = 4 \/  Board[dimension - 1, 1, 1]  = 6 \/  Board[dimension - 1, 1, 1]  = 10) /\ Board[dimension - 1, 1, 2] = Board[dimension,1, 2] )
+((Board[dimension - 1, 1, 1] = 4 \/  Board[dimension - 1, 1, 1]  = 6 \/  Board[dimension - 1, 1, 1]  = 10) /\ (Board[dimension - 1, 1, 2] = Board[dimension,1, 2] \/ Board[dimension - 1, 1, 2] = number + 1))
 \/ 
 % Right move
-((Board[dimension,2, 1] = 1 \/ Board[dimension,2, 1] = 5 \/ Board[dimension,2, 1] = 7) /\  Board[dimension,2, 1] = Board[dimension,1, 1])
+((Board[dimension,2, 1] = 1 \/ Board[dimension,2, 1] = 5 \/ Board[dimension,2, 1] = 7) /\  (Board[dimension,2, 1] = Board[dimension,1, 1] \/ Board[dimension,2, 1] = number + 1))
 endif
 
 /\
@@ -22,10 +22,10 @@ endif
 % Bottom right position
 if Board[dimension,dimension, 1] = 12 then
 % Up move
-((Board[dimension - 1,dimension, 1] = 2 \/ Board[dimension - 1,dimension, 1] = 6 \/ Board[dimension - 1,dimension, 1] = 9) /\ Board[dimension - 1,dimension, 2] = Board[dimension,dimension, 2])
+((Board[dimension - 1,dimension, 1] = 2 \/ Board[dimension - 1,dimension, 1] = 6 \/ Board[dimension - 1,dimension, 1] = 9) /\ (Board[dimension - 1,dimension, 2] = Board[dimension,dimension, 2] \/ Board[dimension - 1,dimension, 2] = number + 1))
 \/ 
 % Left move
-((Board[dimension,dimension -1, 1] = 3 \/ Board[dimension,dimension -1, 1] = 7) /\ Board[dimension,dimension -1, 2] = Board[dimension,dimension, 2])
+((Board[dimension,dimension -1, 1] = 3 \/ Board[dimension,dimension -1, 1] = 7) /\ (Board[dimension,dimension -1, 2] = Board[dimension,dimension, 2] \/ Board[dimension,dimension -1, 2] = number + 1))
 endif
 
 /\
@@ -34,13 +34,13 @@ endif
 forall(j in 2..(dimension-1)) (
 if Board[dimension, j, 1] = 12 then
 % Up move
-((Board[dimension - 1, j, 1] = 2 \/ Board[dimension - 1, j, 1] = 4 \/ Board[dimension - 1, j, 1] = 6 \/ Board[dimension - 1, j, 1] = 8 \/ Board[dimension - 1, j, 1] = 9 \/ Board[dimension - 1, j, 1] = 10 \/ Board[dimension - 1, j, 1] = 11) /\ Board[dimension - 1, j, 2] = Board[dimension, j, 2])
+((Board[dimension - 1, j, 1] = 2 \/ Board[dimension - 1, j, 1] = 4 \/ Board[dimension - 1, j, 1] = 6 \/ Board[dimension - 1, j, 1] = 8 \/ Board[dimension - 1, j, 1] = 9 \/ Board[dimension - 1, j, 1] = 10 \/ Board[dimension - 1, j, 1] = 11) /\ (Board[dimension - 1, j, 2] = Board[dimension, j, 2] \/ Board[dimension - 1, j, 2] = number + 1))
 \/
 % Left move
-((Board[dimension, j-1,1] = 3 \/ Board[dimension, j-1,1] = 5 \/ Board[dimension, j-1,1] = 7) /\  Board[dimension, j-1,2] = Board[dimension, j, 2])
+((Board[dimension, j-1,1] = 3 \/ Board[dimension, j-1,1] = 5 \/ Board[dimension, j-1,1] = 7) /\  (Board[dimension, j-1,2] = Board[dimension, j, 2] \/ Board[dimension, j-1,2] = number + 1))
 \/
 %Right move
-((Board[dimension, j+1,1] = 1 \/ Board[dimension, j+1,1] = 5 \/ Board[dimension, j+1,1] = 7) /\  Board[dimension, j+1,2] = Board[dimension, j, 2])
+((Board[dimension, j+1,1] = 1 \/ Board[dimension, j+1,1] = 5 \/ Board[dimension, j+1,1] = 7) /\  (Board[dimension, j+1,2] = Board[dimension, j, 2] \/ Board[dimension, j+1,2] = number + 1))
 endif
 )
 
@@ -63,6 +63,14 @@ Board[dimension - n + 1, starting_points[n,1], 1] = 12 /\ Board[dimension - n + 
 endif
 )
 );
+
+
+% There can be only one goal point, denoted by the number (n+1) on the second dimension of the board.
+constraint(
+let {array[D,D] of var 0..12: PathsBoard; constraint forall(i,j in D) (PathsBoard[i,j] = Board[i,j, 2]);} in
+count_eq(PathsBoard, number + 1, 1)
+);
+
 
 solve satisfy;
 
