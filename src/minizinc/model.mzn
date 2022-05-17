@@ -52,11 +52,31 @@ if Board[1, 1, 1] = 12 then
 ((Board[2, 1, 1] = 3 \/ Board[2, 1, 1] = 6 \/ Board[2, 1, 1] = 10) /\ (Board[2, 1, 2] = Board[1, 1, 2] \/ Board[2, 1, 2] = number + 1))
 
 \/
-
+% Right move
 ((Board[1,2,1] = 2 \/ Board[1,2,1] = 5 \/ Board[1,2,1] = 8) /\ (Board[1, 2, 2] = Board[1, 1, 2] \/ Board[1, 2, 2] = number + 1))
 endif
-);
 
+
+/\
+
+% Left position (not top left nor bottom left)
+forall(i in 2..(dimension-1)) (
+if Board[1, i, 1] = 12 then
+% Up move
+((Board[1, i - 1, 1] = 4 \/ Board[1, i - 1, 1] = 6 \/ Board[1, i - 1, 1] = 10) /\ (Board[1, i - 1, 2] = Board[1, i, 2] \/ Board[1, i - 1, 2] = number + 1))
+\/
+% Bottom move
+((Board[1, i + 1, 1] = 3 \/ Board[1, i + 1, 1] = 6 \/ Board[1, i + 1, 1] = 10) /\ (Board[1, i + 1, 2] = Board[1, i, 2] \/ Board[1, i + 1, 2] = number + 1))
+\/
+% Right move
+((Board[2, i, 1] = 1 \/ Board[2, i, 1] = 2 \/ Board[2, i, 1] = 5 \/ Board[2, i, 1] = 7 \/ Board[2, i, 1] = 8 \/ Board[2, i, 1] = 9 \/ Board[2, i, 1] = 11) /\ (Board[2, i, 2] = Board[1, i, 2] \/ Board[2, i, 2] = number + 1))
+endif
+)
+
+
+
+
+);
 
 
 
