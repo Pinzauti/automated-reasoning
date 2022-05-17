@@ -44,7 +44,17 @@ if Board[dimension, j, 1] = 12 then
 endif
 )
 
+/\
 
+% Top left position
+if Board[1, 1, 1] = 12 then
+% Bottom move
+((Board[2, 1, 1] = 3 \/ Board[2, 1, 1] = 6 \/ Board[2, 1, 1] = 10) /\ (Board[2, 1, 2] = Board[1, 1, 2] \/ Board[2, 1, 2] = number + 1))
+
+\/
+
+((Board[1,2,1] = 2 \/ Board[1,2,1] = 5 \/ Board[1,2,1] = 8) /\ (Board[1, 2, 2] = Board[1, 1, 2] \/ Board[1, 2, 2] = number + 1))
+endif
 );
 
 
@@ -62,13 +72,6 @@ else
 Board[dimension - n + 1, starting_points[n,1], 1] = 12 /\ Board[dimension - n + 1, starting_points[n,1], 2] = n
 endif
 )
-);
-
-
-% There can be only one goal point, denoted by the number (n+1) on the second dimension of the board.
-constraint(
-let {array[D,D] of var 0..12: PathsBoard; constraint forall(i,j in D) (PathsBoard[i,j] = Board[i,j, 2]);} in
-count_eq(PathsBoard, number + 1, 1)
 );
 
 
