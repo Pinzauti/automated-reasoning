@@ -138,23 +138,77 @@ endif
 % Each cell can have only specific cells near it
 constraint(
 forall(i,j in D)(
+% Cell 1
 if Board[i, j, 1] = 1 then
-if j-1 >= 1 then (Board[i, j-1, 1] = 3 \/ Board[i, j-1, 1] = 4 \/ Board[i, j-1, 1] =  5 \/ Board[i, j-1, 1] = 7 \/ Board[i, j-1, 1] = 8 \/ Board[i, j-1, 1] = 10 \/ Board[i, j-1, 1] = 11) /\ (Board[i, j-1, 2] = Board[i, j, 2] \/ Board[i, j-1, 2] = number + 1) endif
+j-1 >= 1 /\  i-1 >= 1 /\
+% Left move
+(Board[i, j-1, 1] = 3 \/ Board[i, j-1, 1] = 4 \/ Board[i, j-1, 1] =  5 \/ Board[i, j-1, 1] = 7 \/ Board[i, j-1, 1] = 8 \/ Board[i, j-1, 1] = 10 \/ Board[i, j-1, 1] = 11 \/ Board[i, j-1, 1] = 12) /\ (Board[i, j-1, 2] = Board[i, j, 2] \/ Board[i, j-1, 2] = number + 1)
+/\
+% Up move
+(Board[i-1, j, 1] = 2 \/ Board[i-1, j, 1] = 4 \/ Board[i-1, j, 1] = 6 \/ Board[i-1, j, 1] = 8 \/ Board[i-1, j, 1] = 9 \/ Board[i-1, j, 1] = 10 \/ Board[i-1, j, 1] = 11 \/ Board[i-1, j, 1] = 12) /\ (Board[i-1, j, 2] = Board[i, j, 2] \/ Board[i-1, j, 2] = number + 1)
+
 endif
 
+/\
+% Cell 2
+if Board[i, j, 1] = 2 then
+j-1 >= 1 /\ j+1 <= dimension /\
+% Left move
+(Board[i, j-1, 1] = 3 \/ Board[i, j-1, 1] = 4 \/ Board[i, j-1, 1] = 5 \/ Board[i, j-1, 1] = 7 \/ Board[i, j-1, 1] = 8 \/ Board[i, j-1, 1] = 10 \/ Board[i, j-1, 1] = 11 \/ Board[i, j-1, 1] = 12) /\ (Board[i, j-1, 2] = Board[i, j, 2] \/ Board[i, j-1, 2] = number + 1)
 
+/\
+% Bottom move
+ (Board[i, j+1, 1] = 1 \/ Board[i, j+1, 1] = 3 \/ Board[i, j+1, 1] = 6 \/ Board[i, j+1, 1] = 7 \/ Board[i, j+1, 1] = 9 \/ Board[i, j+1, 1] = 10 \/ Board[i, j+1, 1] = 11 \/ Board[i, j+1, 1] = 12) /\ (Board[i, j+1, 2] = Board[i, j, 2] \/ Board[i, j+1, 2] = number + 1)
+endif
 
+/\
+
+% Cell 3
+if Board[i, j, 1] = 3 then
+i-1>=1 /\ j+1 <= dimension /\ 
+% Top move
+((Board[i-1, j, 1] = 2 \/ Board[i-1, j, 1] = 4 \/ Board[i-1, j, 1] = 6 \/ Board[i-1, j, 1] = 8 \/ Board[i-1, j, 1] = 9 \/ Board[i-1, j, 1] = 10 \/ Board[i-1, j, 1] = 11 \/ Board[i-1, j, 1] = 12) /\ (Board[i-1, j, 2] = Board[i, j, 2] \/ Board[i-1, j, 2] = number + 1))
+
+/\
+% Bottom move
+((Board[i, j+1, 1] = 1 \/ Board[i, j+1, 1] = 2 \/ Board[i, j+1, 1] = 5 \/ Board[i, j+1, 1] = 7 \/ Board[i, j+1, 1] = 8 \/ Board[i, j+1, 1] = 9 \/ Board[i, j+1, 1] = 11 \/ Board[i, j+1, 1] = 12) /\ (Board[i, j+1, 2] = Board[i, j, 2] \/ Board[i, j+1, 2] = number + 1))
+endif
+
+/\
+% Cell 4
+if Board[i, j, 1] = 4 then
+(i+1 <= dimension /\ j+1 <= dimension) /\ 
+((Board[i+1, j, 1] = 1 \/ Board[i+1, j, 1] = 3 \/ Board[i+1, j, 1] = 6 \/ Board[i+1, j, 1] = 7 \/ Board[i+1, j, 1] = 9 \/ Board[i+1, j, 1] = 10 \/ Board[i+1, j, 1] = 11 \/ Board[i+1, j, 1] = 12) /\ (Board[i+1, j, 1] = Board[i, j, 2] \/ Board[i+1, j, 1] = number + 1))
+/\
+((Board[i, j+1, 1] = 1 \/ Board[i, j+1, 1] = 2 \/ Board[i, j+1, 1] = 5 \/ Board[i, j+1, 1] = 7 \/ Board[i, j+1, 1] = 8 \/ Board[i, j+1, 1] = 9 \/ Board[i, j+1, 1] = 11 \/ Board[i, j+1, 1] = 12) /\ (Board[i, j+1, 2] = Board[i, j, 2] \/ Board[i, j+1, 2] = number + 1))
+endif
+% Cell 5
+
+% Cell 6
+
+% Cell 7
+
+% Cell 8
+
+% Cell 9
+
+% Cell 10 
+
+% Cell 11
 )
 );
 
 % Based on how many initial points there are, there can be a specific goal cell.
 constraint(
-if number = 4 then
+if number = 2 then
 let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (MoveBoard[i,j] = Board[i,j, 1]);} in
-count_eq(MoveBoard, 11, 1)
+among(0, MoveBoard, 7..11)
 elseif number = 3 then
 let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (MoveBoard[i,j] = Board[i,j, 1]);} in
 among(1, MoveBoard, 7..10)
+elseif number = 4 then
+let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (MoveBoard[i,j] = Board[i,j, 1]);} in
+count_eq(MoveBoard, 11, 1)
 else
 1516=2342 % There can't be more than 4 points!
 endif
@@ -163,8 +217,8 @@ endif
 % Each path has to do a specific number of turns.
 constraint(
 forall (n in N)(
-let {array[D,D] of var 0..12: PathsBoard; constraint forall(i,j in D) (if  Board[i,j,2] = n then PathsBoard[i,j] = Board[i,j, 1] else PathsBoard[i,j] = 0 endif );} in
-among(starting_points[n,3], PathsBoard, 1..4)
+let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (if  Board[i,j,2] = n then MoveBoard[i,j] = Board[i,j, 1] else MoveBoard[i,j] = 0 endif );} in
+count(MoveBoard, 1) + count(MoveBoard, 2) + count(MoveBoard, 3) + count(MoveBoard, 4) = starting_points[n,3] 
 ));
 
 % There has to be only one point in the second dimension of the Board laeblled as number+1.
@@ -197,4 +251,4 @@ output
 ] ++ ["\n"];
 
 % TODO
-% Problema di quando ci sono due punti
+% Valuta se riscrivere come prima il check  "Each path has to do a specific number of turns."
