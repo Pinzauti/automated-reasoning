@@ -76,12 +76,12 @@ endif
 /\
 
 % Top right position
-if Board[1, number, 1] = 12 then
+if Board[1, dimension, 1] = 12 then
 % Left move
-((Board[1, number - 1, 1] = 4 \/ Board[1, number - 1, 1] = 5 \/ Board[1, number - 1, 1] = 8) /\ (Board[1, number - 1, 2] = Board[1, number, 2] \/ Board[1, number - 1, 2] = number + 1))
+((Board[1, dimension - 1, 1] = 4 \/ Board[1, dimension - 1, 1] = 5 \/ Board[1, dimension - 1, 1] = 8) /\ (Board[1, dimension - 1, 2] = Board[1, dimension, 2] \/ Board[1, dimension - 1, 2] = number + 1))
 \/
 % Bottom move
-((Board[2, number, 1] = 1 \/ Board[2, number, 1] = 6 \/ Board[2, number, 1] = 9) /\ (Board[2, number, 2] = Board[1, number, 2] \/ Board[2, number, 2] = number + 1))
+((Board[2, dimension, 1] = 1 \/ Board[2, dimension, 1] = 6 \/ Board[2, dimension, 1] = 9) /\ (Board[2, dimension, 2] = Board[1, dimension, 2] \/ Board[2, dimension, 2] = number + 1))
 endif
 
 /\
@@ -103,6 +103,18 @@ endif
 % Right position (not top right nor bottom right)
 /\
 
+forall(i in 2..(dimension-1)) (
+if Board[i, dimension, 1] = 12 then
+% Up move
+((Board[i - 1, dimension, 1] = 2 \/ Board[i - 1, dimension, 1] = 6 \/ Board[i - 1, dimension, 1] = 9) /\ (Board[i - 1, dimension, 2] = Board[i, dimension, 2] \/ Board[i - 1, dimension, 2] = number + 1))
+\/
+% Bottom move
+((Board[i + 1, dimension, 1] = 1 \/ Board[i + 1, dimension, 1] = 6 \/ Board[i + 1, dimension, 1] = 9) /\ (Board[i + 1, dimension, 2] = Board[i, dimension, 2] \/ Board[i + 1, dimension, 2] = number + 1))
+\/
+% Left move
+((Board[i, dimension - 1, 1] = 3 \/ Board[i, dimension - 1, 1] = 4 \/ Board[i, dimension - 1, 1] = 5 \/ Board[i, dimension - 1, 1] = 7 \/ Board[i, dimension - 1, 1] = 8 \/ Board[i, dimension - 1, 1] = 10 \/ Board[i, dimension - 1, 1] = 11) /\ (Board[i, dimension - 1, 2] = Board[i, dimension, 2] \/ Board[i, dimension - 1, 2] = number + 1))
+endif
+)
 
 );
 
