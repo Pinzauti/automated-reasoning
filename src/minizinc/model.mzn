@@ -135,6 +135,17 @@ endif
 )
 );
 
+% Each cell can have only specific cells near it
+constraint(
+forall(i,j in D)(
+if Board[i, j, 1] = 1 then
+if j-1 >= 1 then (Board[i, j-1, 1] = 3 \/ Board[i, j-1, 1] = 4 \/ Board[i, j-1, 1] =  5 \/ Board[i, j-1, 1] = 7 \/ Board[i, j-1, 1] = 8 \/ Board[i, j-1, 1] = 10 \/ Board[i, j-1, 1] = 11) /\ (Board[i, j-1, 2] = Board[i, j, 2] \/ Board[i, j-1, 2] = number + 1) endif
+endif
+
+
+
+)
+);
 
 % Based on how many initial points there are, there can be a specific goal cell.
 constraint(
@@ -156,6 +167,11 @@ let {array[D,D] of var 0..12: PathsBoard; constraint forall(i,j in D) (if  Board
 among(starting_points[n,3], PathsBoard, 1..4)
 ));
 
+% There has to be only one point in the second dimension of the Board laeblled as number+1.
+constraint(
+let {array[D,D] of var 0..12: PathsBoard; constraint forall(i,j in D) (if  Board[i,j,2] != 0 then PathsBoard[i,j] = Board[i,j, 2] else PathsBoard[i,j] = 0 endif );} in
+count_eq(PathsBoard, 4, 1)
+);
 
 % Here we assign the starting points, both in the first dimension of the board (next move) and the second dimension (path). Note that there is a change of notation from the input to the standard array indexing of MiniZinc, which is properly handled. 
 constraint(
@@ -181,5 +197,4 @@ output
 ] ++ ["\n"];
 
 % TODO
-% aggiungere i constraint per le mosse che si possono fare dopo una specifica cella
 % Problema di quando ci sono due punti
