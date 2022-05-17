@@ -119,10 +119,15 @@ endif
 );
 
 
-% Pahts have to do a definite number of turns to arrive to the goal.
+% Based on how many initial points there are, there can be a specific goal cell.
 constraint(
-let {array[D,D] of var 0..12: PathsBoard; constraint forall(i,j in D) (PathsBoard[i,j] = Board[i,j, 1]);} in
-count_eq(PathsBoard, number + 1, 1)
+if number = 4 then
+let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (MoveBoard[i,j] = Board[i,j, 1]);} in
+count_eq(MoveBoard, 11, 1)
+else
+let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (MoveBoard[i,j] = Board[i,j, 1]);} in
+among(1, MoveBoard, 7..10)
+endif
 );
 
 
