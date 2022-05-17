@@ -73,12 +73,45 @@ if Board[1, i, 1] = 12 then
 endif
 )
 
+/\
 
+% Top right position
+if Board[1, number, 1] = 12 then
+% Left move
+((Board[1, number - 1, 1] = 4 \/ Board[1, number - 1, 1] = 5 \/ Board[1, number - 1, 1] = 8) /\ (Board[1, number - 1, 2] = Board[1, number, 2] \/ Board[1, number - 1, 2] = number + 1))
+\/
+% Bottom move
+((Board[2, number, 1] = 1 \/ Board[2, number, 1] = 6 \/ Board[2, number, 1] = 9) /\ (Board[2, number, 2] = Board[1, number, 2] \/ Board[2, number, 2] = number + 1))
+endif
+
+/\
+
+% Top position (not top left nor top right)
+forall(j in 2..(dimension-1)) (
+if Board[1, j, 1] = 12 then
+% Left move
+((Board[1, j-1,1] = 4 \/ Board[1, j-1,1] = 5 \/ Board[1, j-1,1] = 8) /\ (Board[1, j-1, 2] = Board[1, j, 2] \/ Board[1, j-1, 2] = number + 1))
+\/
+% Right move
+((Board[1, j+1, 1] = 2 \/ Board[1, j+1, 1] = 5 \/ Board[1, j+1, 1] = 8) /\ (Board[1, j+1, 2] = Board[1, j, 2] \/ Board[1, j+1, 2] = number + 1))
+\/
+%Bottom move
+((Board[2, j,1] = 1 \/ Board[2, j,1] = 3 \/  Board[2, j,1] = 6 \/ Board[2, j,1] = 7 \/ Board[2, j,1] = 9 \/ Board[2, j,1] = 10 \/ Board[2, j,1] = 11) /\ (Board[2, j, 2] = Board[1, j, 2] \/ Board[2, j, 2] = number + 1))
+endif
+)
+
+% Right position (not top right nor bottom right)
+/\
 
 
 );
 
 
+% Pahts have to do a definite number of turns to arrive to the goal.
+constraint(
+let {array[D,D] of var 0..12: PathsBoard; constraint forall(i,j in D) (PathsBoard[i,j] = Board[i,j, 1]);} in
+count_eq(PathsBoard, number + 1, 1)
+);
 
 
 % Here we assign the starting points, both in the first dimension of the board (next move) and the second dimension (path). Note that there is a change of notation from the input to the standard array indexing of MiniZinc, which is properly handled. 
@@ -105,6 +138,6 @@ output
 ] ++ ["\n"];
 
 % TODO
-% da finire di aggiungere i constraint per i punti iniziali
 % aggiungere i constraint per le mosse che si possono fare dopo una specifica cella
 % aggiungere che un percorso può avere solo un certo numero di turns
+% aggiungere la cella che ci deve essere in base ai punti iniziali
