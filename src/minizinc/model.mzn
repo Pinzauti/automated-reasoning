@@ -103,8 +103,6 @@ let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (MoveBoard[
 count_eq(MoveBoard, 12, number)
 );
 
-solve satisfy;
-
 output 
 [
   if i = 1 /\ j = 1 then "\n\n" elseif j=1 then "\n" else " " endif ++
