@@ -11,7 +11,7 @@ def minizinc_manual(solutions_number):
     gecode = Solver.lookup("gecode")
     instance = Instance(gecode, model)
     if solutions_number:
-        result = instance.solve(solutions_number=solutions_number, timeout=timedelta(seconds=300))
+        result = instance.solve(nr_solutions=solutions_number, timeout=timedelta(seconds=300))
     else:
         result = instance.solve(all_solutions=True, timeout=timedelta(seconds=300))
     print(result)
