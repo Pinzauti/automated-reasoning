@@ -74,7 +74,7 @@ endif
 % Each path has to do a specific number of turns.
 constraint(
 forall (n in N)(
-let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (if  Board[i,j,2] = n then MoveBoard[i,j] = Board[i,j, 1] else MoveBoard[i,j] = 0 endif );} in
+let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (if  Board[i,j,2] = n then MoveBoard[i,j] = Board[i,j, 1] else MoveBoard[i,j] = 0 endif);} in
 among(starting_points[n,3], MoveBoard, 1..4)
 ));
 
@@ -109,6 +109,6 @@ solve satisfy;
 output 
 [
   if i = 1 /\ j = 1 then "\n\n" elseif j=1 then "\n" else " " endif ++
-  show(Board[i,j,t])
-  | t in 1..2, i,j in D
+  show(Board[i,j,1])
+  | i,j in D
 ] ++ ["\n"];
