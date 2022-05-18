@@ -178,14 +178,36 @@ endif
 % Cell 4
 if Board[i, j, 1] = 4 then
 (i+1 <= dimension /\ j+1 <= dimension) /\ 
+% Bottom move
 ((Board[i+1, j, 1] = 1 \/ Board[i+1, j, 1] = 3 \/ Board[i+1, j, 1] = 6 \/ Board[i+1, j, 1] = 7 \/ Board[i+1, j, 1] = 9 \/ Board[i+1, j, 1] = 10 \/ Board[i+1, j, 1] = 11 \/ Board[i+1, j, 1] = 12) /\ (Board[i+1, j, 1] = Board[i, j, 2] \/ Board[i+1, j, 1] = number + 1))
 /\
+% Right move
 ((Board[i, j+1, 1] = 1 \/ Board[i, j+1, 1] = 2 \/ Board[i, j+1, 1] = 5 \/ Board[i, j+1, 1] = 7 \/ Board[i, j+1, 1] = 8 \/ Board[i, j+1, 1] = 9 \/ Board[i, j+1, 1] = 11 \/ Board[i, j+1, 1] = 12) /\ (Board[i, j+1, 2] = Board[i, j, 2] \/ Board[i, j+1, 2] = number + 1))
 endif
+
+
+/\
 % Cell 5
+if Board[i, j, 1] = 5 then
+(j-1 >= 1 /\ j+1 <= dimension) /\
+% Left move
+((Board[i, j-1, 1] = 3 \/ Board[i, j-1, 1] = 4 \/ Board[i, j-1, 1] = 5 \/ Board[i, j-1, 1] = 7 \/ Board[i, j-1, 1] = 8 \/ Board[i, j-1, 1] = 10 \/ Board[i, j-1, 1] = 11 \/ Board[i, j-1, 1] = 12) /\ (Board[i, j-1, 2] = Board[i, j, 2] \/ Board[i, j-1, 2] = number + 1))
+/\
+% Right move
+((Board[i, j+1, 1] = 1 \/ Board[i, j+1, 1] = 2 \/ Board[i, j+1, 1] = 5 \/ Board[i, j+1, 1] = 7 \/ Board[i, j+1, 1] = 8 \/ Board[i, j+1, 1] = 9 \/ Board[i, j+1, 1] = 11 \/ Board[i, j+1, 1] = 12) /\ (Board[i, j+1, 2] = Board[i, j, 2] \/ Board[i, j+1, 2] = number + 1))
+endif
 
+/\
 % Cell 6
+if Board[i, j, 1] = 6 then
+(i-1 >= 1 /\ i+1 <= dimension) /\
+% Top move
+((Board[i-1, j, 1] = 2 \/Board[i-1, j, 1] = 4 \/ Board[i-1, j, 1] = 6 \/ Board[i-1, j, 1] = 8 \/ Board[i-1, j, 1] = 9 \/ Board[i-1, j, 1] = 10 \/ Board[i-1, j, 1] = 11 \/ Board[i-1, j, 1] = 12) /\ (Board[i-1, j, 2] = Board[i, j, 2] \/ Board[i-1, j, 2] = number + 1))
+/\
+%Bottom move
+((Board[i+1, j, 1] = 1 \/ Board[i+1, j, 1] = 3 \/ Board[i+1, j, 1] = 6 \/ Board[i+1, j, 1] = 7 \/ Board[i+1, j, 1] = 9 \/ Board[i+1, j, 1] = 10 \/ Board[i+1, j, 1] = 11 \/ Board[i+1, j, 1] = 12) /\ (Board[i+1, j, 2] = Board[i, j, 2] \/ Board[i+1, j, 2] = number + 1))
 
+endif
 % Cell 7
 
 % Cell 8
@@ -252,3 +274,5 @@ output
 
 % TODO
 % Valuta se riscrivere come prima il check  "Each path has to do a specific number of turns."
+% you could have to constraint the number of 12 to not be magior than number
+% pay attention to the real usefulnesss of all the inital condition on the starting points
