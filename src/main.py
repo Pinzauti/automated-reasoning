@@ -45,16 +45,10 @@ def main(tool, mode, dimension, number, solutions_number):
             minizinc_random(dimension, number, solutions_number)
 
     elif tool == "both":
-        if mode == "manual":
-            print("Here the solution for ASP: \n")
-            asp_manual(solutions_number)
-            print("Here the solution for MiniZinc: \n")
-            minizinc_manual(solutions_number)
-        elif mode == "random":
-            print("Here the solution for ASP: \n")
-            asp_random(dimension, number, solutions_number)
-            print("Here the solution for MiniZinc: \n")
-            minizinc_random(dimension, number, solutions_number)
+        print("\nHere the solution for ASP: \n")
+        asp_manual(solutions_number)
+        print("\nHere the solution for MiniZinc: \n")
+        minizinc_manual(solutions_number)
 
 
 def init():
