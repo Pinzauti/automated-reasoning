@@ -7,6 +7,18 @@ from datetime import timedelta
 from minizinc import Instance, Solver, Model
 
 
+def minizinc_prettier(result):
+    if result:
+        for sol in result.solution:
+            print('Here is a possible solution: \n')
+            for i in sol.Board:
+                for element in i:
+                    print(f'{element[0]}', end=' ')
+                print('\n')
+    else:
+        print("No solution found. \n")
+
+
 def minizinc_manual(solutions_number):
     """
     Manual instances for MiniZinc. You can modify the input file located in minizinc/data/input.dzn.
@@ -21,7 +33,7 @@ def minizinc_manual(solutions_number):
         result = instance.solve(nr_solutions=solutions_number, timeout=timedelta(seconds=300))
     else:
         result = instance.solve(all_solutions=True, timeout=timedelta(seconds=300))
-    print(result)
+    minizinc_prettier(result)
 
 
 def minizinc_random(dimension, number, solutions_number):
@@ -52,4 +64,4 @@ def minizinc_random(dimension, number, solutions_number):
         result = instance.solve(nr_solutions=solutions_number, timeout=timedelta(seconds=300))
     else:
         result = instance.solve(all_solutions=True, timeout=timedelta(seconds=300))
-    print(result)
+    minizinc_prettier(result)
