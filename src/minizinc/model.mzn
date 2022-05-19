@@ -103,9 +103,16 @@ let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (MoveBoard[
 count_eq(MoveBoard, 12, number)
 );
 
+% If in the first dimension of the board there is not a path, there is not even in the second.
+constraint(
+forall(i,j in D) (
+if Board[i,j,1] = 0 then Board[i,j,2] = Board[i,j,1] endif
+)
+);
+
 output 
 [
   if i = 1 /\ j = 1 then "\n\n" elseif j=1 then "\n" else " " endif ++
-  show(Board[i,j,1])
-  | i,j in D
+  show(Board[i,j,t])
+  | t in 1..2, i,j in D
 ] ++ ["\n"];
