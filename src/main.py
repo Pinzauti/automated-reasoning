@@ -4,7 +4,7 @@ in APS and Minizinc.
 """
 import argparse
 from asp import asp_manual, asp_random
-from mz import minizinc_manual
+from mz import minizinc_manual, minizinc_random
 
 
 def main(tool, mode, dimension, number, solutions_number):
@@ -42,8 +42,19 @@ def main(tool, mode, dimension, number, solutions_number):
         if mode == "manual":
             minizinc_manual(solutions_number)
         elif mode == "random":
-            pass
-        pass
+            minizinc_random(dimension, number, solutions_number)
+
+    elif tool == "both":
+        if mode == "manual":
+            print("Here the solution for ASP: \n")
+            asp_manual(solutions_number)
+            print("Here the solution for MiniZinc: \n")
+            minizinc_manual(solutions_number)
+        elif mode == "random":
+            print("Here the solution for ASP: \n")
+            asp_random(dimension, number, solutions_number)
+            print("Here the solution for MiniZinc: \n")
+            minizinc_random(dimension, number, solutions_number)
 
 
 def init():
@@ -56,7 +67,7 @@ def init():
                     "If you want to use the random mode you can also choose the dimension and the number of starting"
                     "points")
     parser.add_argument('tool',
-                        choices=["asp", "minizinc"],
+                        choices=["asp", "minizinc", "both"],
                         help="Choose between ASP and MiniZinc.")
     parser.add_argument('mode',
                         choices=["manual", "random"],

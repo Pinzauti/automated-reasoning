@@ -1,9 +1,9 @@
 """
 Everything related to ASP (e.g. prettify the result, generate random instances etc.) is contained in this file.
 """
+import clingo
 import random
 import re
-import clingo
 
 
 def asp_prettier(m):
@@ -43,7 +43,7 @@ def asp_manual(solutions_number):
 
 def asp_random(user_dimension, number, solutions_number):
     """
-    Random instances for ASP. A random instance is generated and printed in an human readable way. It includes the
+    Random instances for ASP. A random instance is generated and printed in a human-readable way. It includes the
     dimension of the board, the number of starting points, the position of the points and the turns they have to make.
     For obvious reasons not all instances will have a solution.
     :param number: the number of starting points defined by the user, used in random mode.

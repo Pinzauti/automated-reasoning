@@ -11,6 +11,9 @@ endif
 ASP-MANUAL = ${PYTHON} main.py asp manual
 ASP-RANDOM = ${PYTHON} main.py asp random
 MINIZINC-MANUAL = ${PYTHON} main.py minizinc manual
+MINIZINC-RANDOM = ${PYTHON} main.py minizinc random
+BOTH-MANUAL = ${PYTHON} main.py both manual
+BOTH-RANDOM = ${PYTHON} main.py both random
 HELP = ${PYTHON} main.py -h
 
 default:
@@ -32,3 +35,12 @@ asp-random:
 
 minizinc-manual:
 	@${MINIZINC-MANUAL} $(if $(s),-s=$(s))
+
+minizinc-random:
+	@${MINIZINC-RANDOM} $(if $(d),-d=$(d)) $(if $(n),-n=$(n)) $(if $(s),-s=$(s))
+
+both-manual:
+	@${BOTH-MANUAL} $(if $(s),-s=$(s))
+
+both-random:
+	@${BOTH-RANDOM} $(if $(d),-d=$(d)) $(if $(n),-n=$(n)) $(if $(s),-s=$(s))
