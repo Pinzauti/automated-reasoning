@@ -2,7 +2,7 @@ include "globals.mzn";
 
 par int: dimension; set of int: D = 1..dimension; % Dimension of the board
 par int: number; set of int: N = 1..number; % Number of starting points
-array[N, 1..3] of par 0..number: starting_points; % These are the starting points, one per row. First two columns are the coordinates X and Y and the last element is the number of turn that the starting points have to make in order to arrive to the intersection.
+array[N, 1..3] of par 0..dimension: starting_points; % These are the starting points, one per row. First two columns are the coordinates X and Y and the last element is the number of turn that the starting points have to make in order to arrive to the intersection.
 array[D, D, 1..2] of var 0..12: Board; % This is the DxD board. In the first dimension we have the next move, in the second dimension to which path the move belongs to.
 
 % We assign the starting points, both in the first dimension of the board (next move) and the second dimension (path). Note that there is a change of notation from the input to the standard array indexing of MiniZinc, which is properly handled. 
@@ -113,6 +113,6 @@ if Board[i,j,1] = 0 then Board[i,j,2] = Board[i,j,1] endif
 output 
 [
   if i = 1 /\ j = 1 then "\n\n" elseif j=1 then "\n" else " " endif ++
-  show(Board[i,j,t])
-  | t in 1..2, i,j in D
+  show(Board[i,j,1])
+  | i,j in D
 ] ++ ["\n"];

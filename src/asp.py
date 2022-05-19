@@ -70,7 +70,7 @@ def asp_random(user_dimension, number, solutions_number):
             if number:
                 return number
             else:
-                return random.randint(2, 5)
+                return random.randint(2, 4)
         return random.randint(1, dimension)
 
     ctl = clingo.Control()
@@ -78,7 +78,7 @@ def asp_random(user_dimension, number, solutions_number):
     boardl = f"boardl({dimension})."
     starting_points = ""
     model = """#include "asp/model.lp"."""
-    for _ in range(0, casual(number_of_starting_points=True)):
+    for _ in range(casual(number_of_starting_points=True)):
         starting_points += f"number({casual()},{casual()},{casual(turns=True)})."
     ctl.add("base", [], boardl + starting_points + model)
     ctl.ground([("base", [])])

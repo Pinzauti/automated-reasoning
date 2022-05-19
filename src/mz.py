@@ -50,12 +50,11 @@ def minizinc_random(dimension, number, solutions_number):
     gecode = Solver.lookup("gecode")
     instance = Instance(gecode, model)
     instance["dimension"] = dimension if dimension else random.randint(3, 5)
-    instance["number"] = number if number else random.randint(2, 5)
-    instance["starting_points"] = [
-        [random.randint(1, dimension), random.randint(1, dimension), random.randint(0, dimension)] for _ in
-        range(number)]
+    instance["number"] = number if number else random.randint(2, 4)
+    instance["starting_points"] = [[random.randint(1, instance["dimension"]), random.randint(1, instance["dimension"]),
+                                    random.randint(0, instance["dimension"])] for _ in range(instance["number"])]
 
-    print(f'\nThe dimension of the board is {dimension}. \n')
+    print(f'\nThe dimension of the board is {instance["dimension"]}. \n')
     print(f'The starting points are: \n')
     for point in instance["starting_points"]:
         print(f'Coordinates: ({point[0]}, {point[1]}) with turns: {point[2]}')
