@@ -1,16 +1,15 @@
 """
 Everything related to MiniZinc (e.g. generate random instances etc.) is contained in this file.
 """
+from minizinc import Instance, Solver, Model
 import random
 from datetime import timedelta
-
-from minizinc import Instance, Solver, Model
 
 
 def minizinc_prettier(result):
     if result:
         for sol in result.solution:
-            print('Here is a possible solution: \n')
+            print('A possible solution is: \n')
             for i in sol.Board:
                 for element in i:
                     print(f'{element[0]}', end=' ')

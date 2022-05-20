@@ -21,7 +21,7 @@ def main(tool, mode, dimension, number, solutions_number):
     if dimension and dimension < 2:
         print("The dimension of the board must be at least 2. \n")
         return
-    elif dimension and dimension > 7:
+    elif dimension and dimension > 6:
         print("Better not to go above seven. \n")
         return
 
