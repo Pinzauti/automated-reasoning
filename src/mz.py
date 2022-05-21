@@ -26,7 +26,7 @@ def minizinc_manual(solutions_number):
     """
     model = Model("./minizinc/model.mzn")
     model.add_file("./minizinc/data/input.dzn")
-    gecode = Solver.lookup("gecode")
+    gecode = Solver.lookup("chuffed")
     instance = Instance(gecode, model)
     if solutions_number:
         result = instance.solve(nr_solutions=solutions_number, timeout=timedelta(seconds=300))
@@ -46,7 +46,7 @@ def minizinc_random(dimension, number, solutions_number):
     :return: None.
     """
     model = Model("./minizinc/model.mzn")
-    gecode = Solver.lookup("gecode")
+    gecode = Solver.lookup("chuffed")
     instance = Instance(gecode, model)
     instance["dimension"] = dimension if dimension else random.randint(3, 5)
     instance["number"] = number if number else random.randint(2, 4)
