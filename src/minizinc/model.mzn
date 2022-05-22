@@ -94,7 +94,7 @@ among(starting_points[n,3], MoveBoard, 1..4)
 % There has to be only one point in the second dimension of the Board labelled as number+1.
 constraint(
 let {array[D,D] of var 0..12: PathsBoard; constraint forall(i,j in D) (PathsBoard[i,j] = Board[i,j,2]);} in
-count_eq(PathsBoard, 4, 1)
+count_eq(PathsBoard, number + 1, 1)
 );
 
 % The number of starting points is fixed.

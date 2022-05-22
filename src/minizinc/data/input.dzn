@@ -1,0 +1,9 @@
+% This is an example, delete it and insert here your data.
+dimension = 5;
+
+number = 3;
+
+starting_points = [|1, 1, 1
+          |2, 1, 1
+          |3, 3, 0 |]
+
