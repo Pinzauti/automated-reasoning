@@ -110,6 +110,9 @@ if Board[i,j,1] = 0 then Board[i,j,2] = Board[i,j,1] endif
 )
 );
 
+solve :: int_search(Board, first_fail, indomain_median)
+      satisfy;
+      
 output 
 [
   if i = 1 /\ j = 1 then "\n\n" elseif j=1 then "\n" else " " endif ++
