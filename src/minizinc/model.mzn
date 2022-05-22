@@ -13,7 +13,7 @@ if starting_points[n,2] = 1 then Board[dimension, starting_points[n,1], 1] = 12 
 elseif
 starting_points[n,2] = dimension then Board[1, starting_points[n,1], 1] = 12 /\ Board[1, starting_points[n,1], 2] = n
 else
-Board[dimension - n + 1, starting_points[n,1], 1] = 12 /\ Board[dimension - n + 1, starting_points[n,1], 2] = n
+Board[dimension - starting_points[n,2] + 1, starting_points[n,1], 1] = 12 /\ Board[dimension - starting_points[n,2] + 1, starting_points[n,1], 2] = n
 endif
 )
 );
