@@ -21,23 +21,36 @@ endif
 % We define the allowed moves (top, bottom, left, right)
 predicate top(int: i, int: j) =
 i-1 > 0 /\ 
-(Board[i-1, j, 1] = 2 \/ Board[i-1, j, 1] = 4 \/ Board[i-1, j, 1] = 6 \/ Board[i-1, j, 1] = 8 \/ Board[i-1, j, 1] = 9 \/ Board[i-1, j, 1] = 10 \/ Board[i-1, j, 1] = 11 \/ Board[i-1, j, 1] = 12) /\ 
+(t_cells(i,j)\/ Board[i-1, j, 1] = 12) /\ 
 (Board[i-1, j, 2] != number + 1 -> (Board[i, j, 2] = Board[i-1, j, 2]  \/ Board[i, j, 2] = number + 1));
 
 predicate bottom(int: i, int:j) =
 i+1 <= dimension /\ 
-(Board[i+1, j, 1] = 1 \/ Board[i+1, j, 1] = 3 \/ Board[i+1, j, 1] = 6 \/ Board[i+1, j, 1] = 7 \/ Board[i+1, j, 1] = 9 \/ Board[i+1, j, 1] = 10 \/ Board[i+1, j, 1] = 11 \/ Board[i+1, j, 1] = 12) /\ 
+(b_cells(i,j)\/ Board[i+1, j, 1] = 12) /\ 
 (Board[i+1, j, 2] != number + 1 -> (Board[i, j, 2] = Board[i+1, j, 2] \/ Board[i, j, 2] = number + 1));
 
 predicate left(int: i, int: j) =
 j-1 > 0 /\ 
-(Board[i, j-1, 1] = 3 \/ Board[i, j-1, 1] = 4 \/ Board[i, j-1, 1] =  5 \/ Board[i, j-1, 1] = 7 \/ Board[i, j-1, 1] = 8 \/ Board[i, j-1, 1] = 10 \/ Board[i, j-1, 1] = 11 \/ Board[i, j-1, 1] = 12) /\ 
+(l_cells(i,j)\/ Board[i, j-1, 1] = 12) /\ 
 (Board[i, j-1, 2] != number + 1 -> (Board[i, j, 2] = Board[i, j-1, 2] \/ Board[i, j, 2] = number + 1));
 
 predicate right(int: i, int: j) =
 j+1 <= dimension /\ 
-(Board[i, j+1, 1] = 1 \/ Board[i, j+1, 1] = 2 \/ Board[i, j+1, 1] = 5 \/ Board[i, j+1, 1] = 7 \/ Board[i, j+1, 1] = 8 \/ Board[i, j+1, 1] = 9 \/ Board[i, j+1, 1] = 11 \/ Board[i, j+1, 1] = 12) /\ 
+(r_cells(i,j) \/ Board[i, j+1, 1] = 12) /\ 
 (Board[i, j+1, 2] != number + 1 -> (Board[i, j, 2] = Board[i, j+1, 2] \/ Board[i, j, 2] = number + 1));
+
+
+predicate t_cells(int: i, int: j) =
+(Board[i-1, j, 1] = 2 \/ Board[i-1, j, 1] = 4 \/ Board[i-1, j, 1] = 6 \/ Board[i-1, j, 1] = 8 \/ Board[i-1, j, 1] = 9 \/ Board[i-1, j, 1] = 10 \/ Board[i-1, j, 1] = 11);
+
+predicate b_cells(int: i, int:j) =
+(Board[i+1, j, 1] = 1 \/ Board[i+1, j, 1] = 3 \/ Board[i+1, j, 1] = 6 \/ Board[i+1, j, 1] = 7 \/ Board[i+1, j, 1] = 9 \/ Board[i+1, j, 1] = 10 \/ Board[i+1, j, 1] = 11);
+
+predicate l_cells(int: i, int: j) =
+(Board[i, j-1, 1] = 3 \/ Board[i, j-1, 1] = 4 \/ Board[i, j-1, 1] =  5 \/ Board[i, j-1, 1] = 7 \/ Board[i, j-1, 1] = 8 \/ Board[i, j-1, 1] = 10 \/ Board[i, j-1, 1] = 11);
+
+predicate r_cells(int: i, int: j) =
+(Board[i, j+1, 1] = 1 \/ Board[i, j+1, 1] = 2 \/ Board[i, j+1, 1] = 5 \/ Board[i, j+1, 1] = 7 \/ Board[i, j+1, 1] = 8 \/ Board[i, j+1, 1] = 9 \/ Board[i, j+1, 1] = 11);
 
 % Each cell defines specific connections
 constraint(
@@ -66,7 +79,6 @@ forall(i,j in D)(
 (Board[i, j, 1] = 11 -> top(i,j) /\ bottom(i,j) /\ right(i,j) /\ left(i,j)) /\
 
 (Board[i, j, 1] = 12 -> top(i,j) \/ bottom(i,j) \/ right(i,j) \/ left(i,j))
-
 )
 );
 
@@ -103,19 +115,33 @@ let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (MoveBoard[
 count_eq(MoveBoard, 12, number)
 );
 
-% If in the first dimension of the board there is not a path, there is not even in the second.
+% If in the first dimension of the board there is not a path, there is not even in the second and viceversa. The number of paths in the second dimension of the board should equal the number of starting points.
 constraint(
 forall(i,j in D) (
-if Board[i,j,1] = 0 then Board[i,j,2] = Board[i,j,1] endif
+if Board[i,j,1] = 0 then Board[i,j,2] = 0 endif
+/\
+if Board[i,j,2] = 0 then Board[i,j,1] = 0 endif
+/\
+Board[i,j,2] <= number + 1
 )
 );
 
-solve :: int_search(Board, first_fail, indomain_median)
-      satisfy;
+% Avoid paths that end in the starting points.
+constraint(
+forall(i,j in D where Board[i,j,1] = 12) (
+if top(i,j) then if i+1 <= dimension then not b_cells(i,j) endif /\ if j-1 > 0 then not l_cells(i,j) endif /\ if j+1 <= dimension then not r_cells(i,j) endif
+elseif bottom(i,j) then if i-1 > 0 then not t_cells(i,j) endif /\ if j-1 > 0 then not l_cells(i,j) endif /\ if j+1 <= dimension then not r_cells(i,j) endif
+elseif left(i,j) then if i-1 > 0 then not t_cells(i,j) endif /\ if i+1 <= dimension then not b_cells(i,j) endif /\ if j+1 <= dimension then not r_cells(i,j) endif 
+elseif right(i,j) then if i-1 > 0 then not t_cells(i,j) endif /\ if i+1 <= dimension then not b_cells(i,j) endif /\ if j-1 > 0 then not l_cells(i,j) endif
+else true endif
+)
+);
+
+solve :: int_search(Board, first_fail, indomain_median) satisfy;
       
 output 
 [
   if i = 1 /\ j = 1 then "\n\n" elseif j=1 then "\n" else " " endif ++
-  show(Board[i,j,1])
+  show(Board[i,j,2])
   | i,j in D
 ] ++ ["\n"];
