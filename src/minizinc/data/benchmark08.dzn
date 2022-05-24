@@ -2,5 +2,5 @@ dimension = 4;
 
 number = 2;
 
-starting_points = [|2,2,4
-                   |4,2,4|];
+starting_points = [|2,2,3
+                   |4,2,3|];

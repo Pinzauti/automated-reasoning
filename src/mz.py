@@ -51,7 +51,7 @@ def minizinc_random(dimension, number, solutions_number):
     instance["dimension"] = dimension if dimension else random.randint(3, 5)
     instance["number"] = number if number else random.randint(2, 4)
     instance["starting_points"] = [[random.randint(1, instance["dimension"]), random.randint(1, instance["dimension"]),
-                                    random.randint(0, instance["dimension"])] for _ in range(instance["number"])]
+                                    random.randint(0, 3)] for _ in range(instance["number"])]
 
     print(f'\nThe dimension of the board is {instance["dimension"]}. \n')
     print(f'The starting points are: \n')
