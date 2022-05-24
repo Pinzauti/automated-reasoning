@@ -142,6 +142,6 @@ solve :: int_search(Board, first_fail, indomain_median) satisfy;
 output 
 [
   if i = 1 /\ j = 1 then "\n\n" elseif j=1 then "\n" else " " endif ++
-  show(Board[i,j,2])
+  show(Board[i,j,1])
   | i,j in D
 ] ++ ["\n"];
