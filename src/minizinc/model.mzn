@@ -88,9 +88,9 @@ let {array[D,D] of var 0..12: MoveBoard; constraint forall(i,j in D) (MoveBoard[
 if number = 2 then
 among(0, MoveBoard, 7..11)
 elseif number = 3 then
-among(1, MoveBoard, 7..10)
+among(1, MoveBoard, 7..10) /\ count_eq(MoveBoard, 11, 0)
 elseif number = 4 then
-count_eq(MoveBoard, 11, 1)
+count_eq(MoveBoard, 11, 1) /\ among(0, MoveBoard, 7..10) 
 else
 false % There can't be more than 4 points!
 endif
