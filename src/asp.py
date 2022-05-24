@@ -65,13 +65,13 @@ def asp_random(user_dimension, number, solutions_number):
         :return: the random number.
         """
         if turns:
-            return random.randint(0, dimension)
+            return random.randint(0, 3)
         if number_of_starting_points:
             if number:
                 return number
             else:
                 return random.randint(2, 4)
-        return random.randint(1, 3)
+        return random.randint(1, dimension)
 
     ctl = clingo.Control()
     ctl.configuration.solve.models = solutions_number if solutions_number else 0
