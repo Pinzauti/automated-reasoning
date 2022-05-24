@@ -65,7 +65,7 @@ def asp_random(user_dimension, number, solutions_number):
         :return: the random number.
         """
         if turns:
-            return random.randint(0, 3)
+            return random.randint(0, 2)
         if number_of_starting_points:
             if number:
                 return number
